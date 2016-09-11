@@ -18,7 +18,25 @@
         (- (calculate (first (rest x))) (calculate (first (rest (rest x)))))
         (if (eq? (first x) 'MUL)
           (* (calculate (first (rest x))) (calculate (first (rest (rest x)))))
-          (display "broken")
+          (if (eq? (first x) 'GT)
+            (> (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+            (if (eq? (first x) 'LT)
+              (< (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+              (if (eq? (first x) 'GE)
+                (>= (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+                (if (eq? (first x) 'LE)
+                  (<= (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+                  (if (eq? (first x) 'EQ)
+                    (= (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+                    (if (eq? (first x) 'NE)
+                      (not (= (calculate (first (rest x))) (calculate (first (rest (rest x))))))
+                      (display "broken")
+                    )
+                  )
+                )
+              )
+            )
+          )
         )
       )
     )
@@ -32,13 +50,13 @@
 (calculate '(ADD 3 (MUL 4 5))) ;; --> 23   ;; what is the equivalent construction using list?
 (calculate '(SUB (ADD 3 4) (MUL 5 6))) ;; --> -23
 
-; ;;; 3. Add comparators returning booleans (*e.g.*, greater than, less than, …).
-; ;; Note that each of these takes numeric arguments (or expressions that evaluate to produce numeric values),
-; ;; but returns a boolean.  We suggest operators `GT`, `LT`, `GE`, `LE`, `EQ`, `NEQ`.
-;
-; (calculate '(GT (ADD 3 4) (MUL 5 6))) ;; --> #f
-; (calculate '(LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6))))) ;; --> #t
-;
+;;; 3. Add comparators returning booleans (*e.g.*, greater than, less than, …).
+;; Note that each of these takes numeric arguments (or expressions that evaluate to produce numeric values),
+;; but returns a boolean.  We suggest operators `GT`, `LT`, `GE`, `LE`, `EQ`, `NEQ`.
+
+(calculate '(GT (ADD 3 4) (MUL 5 6))) ;; --> #f
+(calculate '(LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6))))) ;; --> #t
+
 ; ;;; 4. Add boolean operations ANND, ORR, NOTT
 ;
 ; (calculate '(AND (GT (ADD 3 4) (MUL 5 6))) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6))))) ;; --> #f

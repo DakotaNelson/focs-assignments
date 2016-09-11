@@ -36,7 +36,13 @@
                           (or (calculate (first (rest x))) (calculate (first (rest (rest x)))))
                           (if (eq? (first x) 'NOT)
                             (not (calculate (first (rest x))) (calculate (first (rest (rest x)))))
-                            (display "broken")
+                            (if (eq? (first x) 'IPH)
+                              (if (calculate (first (rest x)))
+                                (calculate (first (rest (rest x))))
+                                (calculate (first (rest (rest (rest x)))))
+                              )
+                              (display "broken")
+                            )
                           )
                         )
                       )
@@ -70,6 +76,6 @@
 
 (calculate '(AND (GT (ADD 3 4) (MUL 5 6)) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #f
 
-; ;;; 5. Add IPH
-;
-; (calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4
+;;; 5. Add IPH
+
+(calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4

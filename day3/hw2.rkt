@@ -30,7 +30,16 @@
                     (= (calculate (first (rest x))) (calculate (first (rest (rest x)))))
                     (if (eq? (first x) 'NE)
                       (not (= (calculate (first (rest x))) (calculate (first (rest (rest x))))))
-                      (display "broken")
+                      (if (eq? (first x) 'AND)
+                        (and (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+                        (if (eq? (first x) 'OR)
+                          (or (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+                          (if (eq? (first x) 'NOT)
+                            (not (calculate (first (rest x))) (calculate (first (rest (rest x)))))
+                            (display "broken")
+                          )
+                        )
+                      )
                     )
                   )
                 )
@@ -57,10 +66,10 @@
 (calculate '(GT (ADD 3 4) (MUL 5 6))) ;; --> #f
 (calculate '(LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6))))) ;; --> #t
 
-; ;;; 4. Add boolean operations ANND, ORR, NOTT
-;
-; (calculate '(AND (GT (ADD 3 4) (MUL 5 6))) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6))))) ;; --> #f
-;
+;;; 4. Add boolean operations AND, OR, NOT
+
+(calculate '(AND (GT (ADD 3 4) (MUL 5 6)) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #f
+
 ; ;;; 5. Add IPH
 ;
 ; (calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4

@@ -1,11 +1,10 @@
 #lang racket
 
-;;; Student Name: Frankly Olin [change to your name]
+;;; Student Name: Dakota Nelson
 ;;;
 ;;; Check one:
 ;;; [ ] I completed this assignment without assistance or external resources.
-;;; [ ] I completed this assignment with assistance from ___
-;;;     and/or using these external resources: ___
+;;; [X] I completed this assignment using these external resources: racket onepager
 
 ;;;;;;;;;;;
 ;; 1. assq
@@ -17,9 +16,19 @@
 ;;
 ;; If the key is not found in the list, `assq` returns `#f`.
 
+(define (assq key lst)
+  (if (null? (first lst))
+    #f
+    (if (eq? key (first (first lst)))
+      (first lst)
+      (assq key (rest lst))
+    )
+  )
 
+)
 
-
+(assq 'Z '((X 1) (Y 2) (Z 3)))
+(assq 'Y '((X 1) (Y 2) (Z 3)))
 
 ;;;;;;;;;;;
 ;; 2. lookup-list

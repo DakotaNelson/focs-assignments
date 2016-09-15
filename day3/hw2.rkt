@@ -30,11 +30,11 @@
                     (= (calculate (first (rest x))) (calculate (first (rest (rest x)))))
                     (if (eq? (first x) 'NE)
                       (not (= (calculate (first (rest x))) (calculate (first (rest (rest x))))))
-                      (if (eq? (first x) 'AND)
+                      (if (eq? (first x) 'ANND)
                         (and (calculate (first (rest x))) (calculate (first (rest (rest x)))))
                         (if (eq? (first x) 'OR)
                           (or (calculate (first (rest x))) (calculate (first (rest (rest x)))))
-                          (if (eq? (first x) 'NOT)
+                          (if (eq? (first x) 'NOTT)
                             (not (calculate (first (rest x))) (calculate (first (rest (rest x)))))
                             (if (eq? (first x) 'IPH)
                               (if (calculate (first (rest x)))
@@ -75,7 +75,6 @@
 ;;; 4. Add boolean operations AND, OR, NOT
 
 (calculate '(ANND (GT (ADD 3 4) (MUL 5 6)) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6)))))) ;; --> #f
-(calculate '(NOTT (ANND (GT (ADD 3 4) (MUL 5 6)) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6))))))) ;; --> #t
 
 ;;; 5. Add IPH
 

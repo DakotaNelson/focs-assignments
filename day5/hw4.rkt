@@ -83,18 +83,40 @@
 (define (run-repl)
   (display "Welcome to my REPL. Type something scheme-ish and hit <return>:")
   (newline)
-  (repl)
+  (repl '())
 )
 
-(define (repl)
+(define (DEFINE? input)
+  ;(if (or (number? input) (boolean? input))
+  (if (not (list? input))
+    #f
+    (if (eq? (first input) 'DEFINE)
+      #t
+      #f
+    )
+  )
+)
+
+(define (repl vars)
   (display "> ")
-  (display (myeval (read)))
-  (newline)
-  (repl)
+  (repl (process-input (read) vars))
 )
 
-(define (myeval sexpr)
-   (calculate sexpr null)
+(define (process-input input vars)
+  ;; returns new set of vars
+  (if (DEFINE? input)
+    (if (null? vars)
+      (list (list (first (rest input)) (calculate (first (rest (rest input))) vars)))
+      (list vars (list (first (rest input)) (calculate (first (rest (rest input))) vars)))
+    )
+    (myeval input vars)
+  )
+)
+
+(define (myeval sexpr vars)
+  (display (calculate sexpr vars))
+  (newline)
+  vars
 )
 
 ; actually kick off the REPL

@@ -97,6 +97,17 @@
   )
 )
 
+(define (LAMBDA? input)
+  ;(if (or (number? input) (boolean? input))
+  (if (not (list? input))
+    #f
+    (if (eq? (first input) 'LAMBDA)
+      #t
+      #f
+    )
+  )
+)
+
 (define (repl vars)
   (display "> ")
   (repl (process-input (read) vars))
@@ -109,7 +120,10 @@
       (list (list (first (rest input)) (calculate (first (rest (rest input))) vars)))
       (list vars (list (first (rest input)) (calculate (first (rest (rest input))) vars)))
     )
-    (myeval input vars)
+    (if (LAMBDA? input)
+      (lambda (first (rest input)) (calculate (first (rest (rest input))) vars))
+      (myeval input vars)
+    )
   )
 )
 
